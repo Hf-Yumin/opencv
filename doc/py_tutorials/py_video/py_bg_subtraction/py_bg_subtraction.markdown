@@ -20,7 +20,7 @@ extract the moving foreground from static background.
 If you have an image of background alone, like an image of the room without visitors, image of the road
 without vehicles etc, it is an easy job. Just subtract the new image from the background. You get
 the foreground objects alone. But in most of the cases, you may not have such an image, so we need
-to extract the background from whatever images we have. It become more complicated when there are
+to extract the background from whatever images we have. It becomes more complicated when there are
 shadows of the vehicles. Since shadows also move, simple subtraction will mark that also as
 foreground. It complicates things.
 
@@ -37,42 +37,42 @@ the time proportions that those colours stay in the scene. The probable backgrou
 ones which stay longer and more static.
 
 While coding, we need to create a background object using the function,
-**cv2.createBackgroundSubtractorMOG()**. It has some optional parameters like length of history,
+**cv.createBackgroundSubtractorMOG()**. It has some optional parameters like length of history,
 number of gaussian mixtures, threshold etc. It is all set to some default values. Then inside the
 video loop, use backgroundsubtractor.apply() method to get the foreground mask.
 
 See a simple example below:
 @code{.py}
 import numpy as np
-import cv2
+import cv2 as cv
 
-cap = cv2.VideoCapture('vtest.avi')
+cap = cv.VideoCapture('vtest.avi')
 
-fgbg = cv2.createBackgroundSubtractorMOG()
+fgbg = cv.bgsegm.createBackgroundSubtractorMOG()
 
 while(1):
     ret, frame = cap.read()
 
     fgmask = fgbg.apply(frame)
 
-    cv2.imshow('frame',fgmask)
-    k = cv2.waitKey(30) & 0xff
+    cv.imshow('frame',fgmask)
+    k = cv.waitKey(30) & 0xff
     if k == 27:
         break
 
 cap.release()
-cv2.destroyAllWindows()
+cv.destroyAllWindows()
 @endcode
 ( All the results are shown at the end for comparison).
 
 ### BackgroundSubtractorMOG2
 
 It is also a Gaussian Mixture-based Background/Foreground Segmentation Algorithm. It is based on two
-papers by Z.Zivkovic, "Improved adaptive Gausian mixture model for background subtraction" in 2004
+papers by Z.Zivkovic, "Improved adaptive Gaussian mixture model for background subtraction" in 2004
 and "Efficient Adaptive Density Estimation per Image Pixel for the Task of Background Subtraction"
 in 2006. One important feature of this algorithm is that it selects the appropriate number of
 gaussian distribution for each pixel. (Remember, in last case, we took a K gaussian distributions
-throughout the algorithm). It provides better adaptibility to varying scenes due illumination
+throughout the algorithm). It provides better adaptability to varying scenes due illumination
 changes etc.
 
 As in previous case, we have to create a background subtractor object. Here, you have an option of
@@ -80,24 +80,24 @@ detecting shadows or not. If detectShadows = True (which is so by default), it
 detects and marks shadows, but decreases the speed. Shadows will be marked in gray color.
 @code{.py}
 import numpy as np
-import cv2
+import cv2 as cv
 
-cap = cv2.VideoCapture('vtest.avi')
+cap = cv.VideoCapture('vtest.avi')
 
-fgbg = cv2.createBackgroundSubtractorMOG2()
+fgbg = cv.createBackgroundSubtractorMOG2()
 
 while(1):
     ret, frame = cap.read()
 
     fgmask = fgbg.apply(frame)
 
-    cv2.imshow('frame',fgmask)
-    k = cv2.waitKey(30) & 0xff
+    cv.imshow('frame',fgmask)
+    k = cv.waitKey(30) & 0xff
     if k == 27:
         break
 
 cap.release()
-cv2.destroyAllWindows()
+cv.destroyAllWindows()
 @endcode
 (Results given at the end)
 
@@ -120,26 +120,26 @@ frames.
 It would be better to apply morphological opening to the result to remove the noises.
 @code{.py}
 import numpy as np
-import cv2
+import cv2 as cv
 
-cap = cv2.VideoCapture('vtest.avi')
+cap = cv.VideoCapture('vtest.avi')
 
-kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE,(3,3))
-fgbg = cv2.createBackgroundSubtractorGMG()
+kernel = cv.getStructuringElement(cv.MORPH_ELLIPSE,(3,3))
+fgbg = cv.bgsegm.createBackgroundSubtractorGMG()
 
 while(1):
     ret, frame = cap.read()
 
     fgmask = fgbg.apply(frame)
-    fgmask = cv2.morphologyEx(fgmask, cv2.MORPH_OPEN, kernel)
+    fgmask = cv.morphologyEx(fgmask, cv.MORPH_OPEN, kernel)
 
-    cv2.imshow('frame',fgmask)
-    k = cv2.waitKey(30) & 0xff
+    cv.imshow('frame',fgmask)
+    k = cv.waitKey(30) & 0xff
     if k == 27:
         break
 
 cap.release()
-cv2.destroyAllWindows()
+cv.destroyAllWindows()
 @endcode
 Results
 -------

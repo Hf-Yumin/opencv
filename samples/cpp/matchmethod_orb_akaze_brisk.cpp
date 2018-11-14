@@ -1,4 +1,7 @@
-#include <opencv2/opencv.hpp>
+#include <opencv2/core.hpp>
+#include <opencv2/imgproc.hpp>
+#include <opencv2/features2d.hpp>
+#include <opencv2/highgui.hpp>
 #include <vector>
 #include <iostream>
 
@@ -144,15 +147,15 @@ int main(int argc, char *argv[])
                     desMethCmp.push_back(cumSumDist2);
                     waitKey();
                 }
-                catch (Exception& e)
-                    {
+                catch (const Exception& e)
+                {
                     cout << e.msg << endl;
                     cout << "Cumulative distance cannot be computed." << endl;
                     desMethCmp.push_back(-1);
-                    }
                 }
+            }
         }
-        catch (Exception& e)
+        catch (const Exception& e)
         {
             cout << "Feature : " << *itDesc << "\n";
             if (itMatcher != typeAlgoMatch.end())
@@ -164,7 +167,7 @@ int main(int argc, char *argv[])
     }
     int i=0;
     cout << "Cumulative distance between keypoint match for different algorithm and feature detector \n\t";
-    cout << "We cannot say which is the best but we can say results are differents! \n\t";
+    cout << "We cannot say which is the best but we can say results are different! \n\t";
     for (vector<String>::iterator itMatcher = typeAlgoMatch.begin(); itMatcher != typeAlgoMatch.end(); ++itMatcher)
     {
         cout<<*itMatcher<<"\t";
